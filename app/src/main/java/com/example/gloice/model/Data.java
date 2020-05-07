@@ -1,18 +1,32 @@
 package com.example.gloice.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.example.gloice.db.MovieConverter;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
+@Entity(tableName = "data")
 public class Data {
-
+    @PrimaryKey
     private Integer page;
-    private Integer total_results;
-    private Integer total_pages;
+    @SerializedName("total_results")
+    @Expose
+    private Integer totalResults;
+    @SerializedName("total_pages")
+    @Expose
+    private Integer totalPages;
+    @TypeConverters({MovieConverter.class})
     private List<Movie> results;
 
-    public Data(Integer page, Integer total_results, Integer total_pages, List<Movie> results) {
+    public Data(Integer page, Integer totalResults, Integer totalPages, List<Movie> results) {
         this.page = page;
-        this.total_results = total_results;
-        this.total_pages = total_pages;
+        this.totalResults = totalResults;
+        this.totalPages = totalPages;
         this.results = results;
     }
 
@@ -20,12 +34,12 @@ public class Data {
         return page;
     }
 
-    public Integer getTotal_results() {
-        return total_results;
+    public Integer getTotalResults() {
+        return totalResults;
     }
 
-    public Integer getTotal_pages() {
-        return total_pages;
+    public Integer getTotalPages() {
+        return totalPages;
     }
 
     public List<Movie> getResults() {

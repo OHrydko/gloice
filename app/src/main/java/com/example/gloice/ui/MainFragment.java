@@ -45,7 +45,7 @@ public class MainFragment extends Fragment implements MovieAdapter.OnItemClick {
         viewModel = new ViewModelProvider(activity).get(MainViewModel.class);
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(getViewLifecycleOwner());
-        viewModel.init();
+        viewModel.init(activity);
         currentPage = 1;
         RecyclerView recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
@@ -67,7 +67,7 @@ public class MainFragment extends Fragment implements MovieAdapter.OnItemClick {
         viewModel.getAllData(currentPage).observe(activity, movies -> {
             if (movies != null) {
                 adapter.setMovies(movies.getResults());
-                total = movies.getTotal_pages();
+                total = movies.getTotalPages();
                 currentPage = movies.getPage() + 1;
 
             }
