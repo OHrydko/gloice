@@ -12,10 +12,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.gloice.load_more.LoadMoreItemsRV;
 import com.example.gloice.R;
 import com.example.gloice.adapter.MovieAdapter;
 import com.example.gloice.databinding.FragmentMainBinding;
+import com.example.gloice.load_more.LoadMoreItemsRV;
 import com.example.gloice.model.Movie;
 
 import org.jetbrains.annotations.NotNull;
@@ -57,21 +57,29 @@ public class MainFragment extends Fragment implements MovieAdapter.OnItemClick {
         loadMoreItemsRV.setView(recyclerView);
         loadMoreItemsRV.setLoadMore(() -> {
             if (currentPage < total) {
+                viewModel.setIsLoader(true);
                 viewModel.getAllData(currentPage);
             }
         });
+        loader(binding);
         return binding.getRoot();
     }
 
     private void getMovies() {
         viewModel.getAllData(currentPage).observe(activity, movies -> {
             if (movies != null) {
+                viewModel.setIsLoader(false);
                 adapter.setMovies(movies.getResults());
                 total = movies.getTotalPages();
                 currentPage = movies.getPage() + 1;
 
             }
         });
+    }
+
+    private void loader(FragmentMainBinding binding) {
+        viewModel.getIsLoader().observe(activity, aBoolean ->
+                binding.containerLouder.setVisibility(aBoolean ? View.VISIBLE : View.GONE));
     }
 
 

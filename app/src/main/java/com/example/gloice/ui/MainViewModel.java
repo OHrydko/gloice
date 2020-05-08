@@ -15,6 +15,7 @@ public class MainViewModel extends ViewModel {
     private Repository repository;
     private MutableLiveData<Movie> currentMovie = new MutableLiveData<>();
     private SharedPreferences sharedPreferences;
+    private MutableLiveData<Boolean> isLoader = new MutableLiveData<>(true);
 
     void init(FragmentActivity activity) {
         sharedPreferences = activity.getSharedPreferences("Settings", Context.MODE_PRIVATE);
@@ -22,7 +23,7 @@ public class MainViewModel extends ViewModel {
     }
 
     MutableLiveData<Data> getAllData(int page) {
-        boolean isInternet = sharedPreferences.getBoolean("isInternet",false);
+        boolean isInternet = sharedPreferences.getBoolean("isInternet", false);
         return (isInternet) ? repository.getMovies(page) : repository.getMoviesFromDB(page);
     }
 
@@ -32,5 +33,13 @@ public class MainViewModel extends ViewModel {
 
     void setCurrentMovie(Movie currentMovie) {
         this.currentMovie.setValue(currentMovie);
+    }
+
+    public MutableLiveData<Boolean> getIsLoader() {
+        return isLoader;
+    }
+
+    public void setIsLoader(Boolean isLoader) {
+        this.isLoader.setValue(isLoader);
     }
 }
